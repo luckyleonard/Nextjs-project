@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Button, Layout, Input, Avatar } from 'antd';
 import { GithubOutlined, UserOutlined } from '@ant-design/icons';
+import Container from './Container';
 
 const { Header, Content, Footer } = Layout;
 const GithubIconStyle = {
@@ -15,7 +16,7 @@ const footerStyle = {
   textAlign: 'center',
 };
 
-const PageLayout = ({ Children }) => {
+const PageLayout = ({ children }) => {
   const [search, setSearch] = useState('');
   const handleSearchChange = useCallback((event) => {
     setSearch(event.target.value);
@@ -25,7 +26,7 @@ const PageLayout = ({ Children }) => {
     <>
       <Layout>
         <Header>
-          <div className='header-inner'>
+          <Container renderer={<div className='header-inner' />}>
             <div className='header-left'>
               <div className='logo'>
                 <GithubOutlined style={GithubIconStyle} />
@@ -44,9 +45,11 @@ const PageLayout = ({ Children }) => {
                 <Avatar size={40} icon={<UserOutlined />} />
               </div>
             </div>
-          </div>
+          </Container>
         </Header>
-        <Content>{Children}</Content>
+        <Content>
+          <Container>{children}</Container>
+        </Content>
         <Footer style={footerStyle}>
           Develop by Leonard @
           <a href='mailto:dzhu31@hotmail.com'>dzhu31@hotmail.com</a>
