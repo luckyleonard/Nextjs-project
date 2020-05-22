@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
+
+import createStore from '../store/store';
 
 const isServer = typeof window === 'undefined';
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__';
@@ -18,7 +20,7 @@ function getOrCreateStore(initialState) {
 } //对于store在客户端和服务器端的不同操作
 
 export default (Comp) => {
-  class AppWithRedux extends React.Component {
+  class AppWithRedux extends Component {
     constructor(props) {
       super(props);
       this.reduxStore = getOrCreateStore(props.initialReduxState);

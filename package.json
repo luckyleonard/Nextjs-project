@@ -13,11 +13,16 @@
     "antd": "^4.2.4",
     "axios": "^0.19.2",
     "babel-plugin-styled-components": "^1.10.7",
+    "ioredis": "^4.17.1",
     "koa": "^2.12.0",
     "koa-router": "^8.0.8",
     "next": "9.4.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^5.1.0"
   }
 }
