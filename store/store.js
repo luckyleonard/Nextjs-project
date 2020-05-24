@@ -1,13 +1,38 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import axios from 'axios';
 
 const userInitialState = {
-  username: '',
+  user: '',
 };
+//action type
+const USER_LOGOUT = 'USER_LOGOUT';
+
+//action creators
+export function logout() {
+  return (dispatch) => {
+    axios
+      .post('/logout')
+      .then((resp) => {
+        if (resp.status === 200) {
+          dispatch({
+            type: USER_LOGOUT,
+          });
+        } else {
+          console.log('logout fail', resp);
+        }
+      })
+      .catch((err) => {
+        console.log('logout function error', err);
+      });
+  };
+}
 
 function userReducer(state = userInitialState, action) {
   switch (action.type) {
+    case USER_LOGOUT:
+      return {};
     default:
       return state;
   }
