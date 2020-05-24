@@ -5,7 +5,7 @@ import withRedux from '../utils/with-redux';
 import PageLayout from '../components/Layout';
 
 class MyApp extends App {
-  //方法每次页面切换都会被执行
+  //方法每次页面切换都会被执行,这个方法是重写了给pages页面组件使用的
   static async getInitialProps(ctx) {
     const { Component } = ctx;
     let pageProps = {};
@@ -18,7 +18,7 @@ class MyApp extends App {
   //重写App的render方法
   render() {
     const { Component, pageProps, reduxStore } = this.props;
-    //被渲染的页面组件
+    //Component指代的就是pages文件夹下被渲染的页面组件
     return (
       <Provider store={reduxStore}>
         <PageLayout>

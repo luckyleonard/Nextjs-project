@@ -1,6 +1,3 @@
-import Head from 'next/head';
-import { useEffect, useState, useReducer } from 'react';
-
 export default () => {
   return (
     <div className='container'>
