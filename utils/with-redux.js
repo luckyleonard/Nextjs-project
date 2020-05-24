@@ -20,6 +20,7 @@ function getOrCreateStore(initialState) {
 } //对于store在客户端和服务器端的不同操作
 
 export default (Comp) => {
+  //HOC来处理App组件 提供redux的初始对象给App
   class AppWithRedux extends Component {
     constructor(props) {
       super(props);
@@ -28,9 +29,8 @@ export default (Comp) => {
     }
     render() {
       const { Component, pageProps, ...rest } = this.props;
-      if (pageProps) {
-        pageProps.test = 123;
-      }
+      //Component,pageProps都是来自APP组件原本应该接收的参数
+
       return (
         <Comp
           Component={Component}
@@ -43,17 +43,33 @@ export default (Comp) => {
   }
 
   AppWithRedux.getInitialProps = async (ctx) => {
-    const reduxStore = getOrCreateStore(); //创建一个store
+    let reduxStore;
+    if (isServer) {
+      //服务端根据session里的用户信息进行store初始化
+      const { req } = ctx.ctx;
+      // console.log(ctx);
+      const session = req.session;
+      if (session && session.userInfo) {
+        reduxStore = getOrCreateStore({
+          user: session.userInfo,
+        });
+      } else {
+        reduxStore = getOrCreateStore();
+      }
+    } else {
+      reduxStore = getOrCreateStore();
+    }
 
     ctx.reduxStore = reduxStore;
     //这样在App组件以及子组件上下文中就都已拿到reduxStore了
-    let appProps = {};
+
+    let pageProps = {};
     if (typeof Comp.getInitialProps === 'function') {
-      appProps = await Comp.getInitialProps(ctx);
+      pageProps = await Comp.getInitialProps(ctx);
     }
 
     return {
-      ...appProps,
+      ...pageProps,
       initialReduxState: reduxStore.getState(),
       //返回给AppWithRedux组件，不能直接传store对象，因为上面绑定了很多方法
       //并且在客户端会接收到这个可序列化的字符串，再创建一个客户端的store
