@@ -74,6 +74,7 @@ module.exports = (server) => {
     if (path === '/prepare-auth' && method === 'GET') {
       const { url } = ctx.query;
       ctx.session.urlBeforeAuth = url;
+      // console.log(config.OAUTH_URL);
       ctx.redirect(`${config.OAUTH_URL}`);
       //重定向去验证授权界面
     } else {

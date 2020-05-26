@@ -52,7 +52,7 @@ class MyApp extends App {
   //重写App的render方法
   render() {
     const { Component, pageProps, reduxStore } = this.props;
-    console.log(this.state.loading);
+    // console.log(this.state.loading);
     //Component指代的就是pages文件夹下被渲染的页面组件
     return (
       <Provider store={reduxStore}>
