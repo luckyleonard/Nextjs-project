@@ -7,6 +7,7 @@ const koaBody = require('koa-body');
 
 const config = require('./config');
 const auth = require('./server/auth');
+const api = require('./server/api');
 
 const RedisSessionStore = require('./server/session-store');
 const redis = new Redis(config.redis);
@@ -31,6 +32,8 @@ app.prepare().then(() => {
 
   //截获跟OAuth有关的请求
   auth(server);
+  //截获和Github request有关的请求
+  api(server);
 
   server.use(async (ctx, next) => {
     ctx.req.session = ctx.session;

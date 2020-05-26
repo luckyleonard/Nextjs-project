@@ -1,4 +1,6 @@
-export default () => {
+import { api_request } from '../utils/apiHelper.js';
+
+const Index = ({ data }) => {
   return (
     <div className='container'>
       <main>
@@ -42,3 +44,22 @@ export default () => {
     </div>
   );
 };
+
+// getInitialProps在服务端渲染会执行一次(服务端执行),跳转到这个页面也会执行一次(客户端执行)
+Index.getInitialProps = async ({ ctx }) => {
+  // '/github/search/repositories?q=react'在服务端和客户端会读取成不同地址
+  // 服务端请求axios是localhost的80端口
+  // const result = await axios.get('/github/search/repositories?q=react');
+  const result = await api_request(
+    {
+      url: '/search/repositories?q=react',
+    },
+    ctx.req,
+    ctx.res
+  );
+  return {
+    data: result.data,
+  };
+};
+
+export default Index;
