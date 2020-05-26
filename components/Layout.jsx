@@ -21,12 +21,17 @@ const footerStyle = {
 };
 
 const PageLayout = ({ children, user, logout, router }) => {
-  const [search, setSearch] = useState('');
+  const urlQuery = router.query && router.query.query;
+  //拿到路由中的query用来填充search
+  const [search, setSearch] = useState(urlQuery || '');
 
   const handleSearchChange = useCallback((event) => {
     setSearch(event.target.value);
   }, []);
-  const handleOnSearch = useCallback(() => {}, []);
+  const handleOnSearch = useCallback(() => {
+    router.push(`/search?query=${search}`);
+    //进行路由跳转，根据search state的变化更新url
+  }, [search]);
 
   const handleLogout = (e) => {
     e.preventDefault();
@@ -50,7 +55,11 @@ const PageLayout = ({ children, user, logout, router }) => {
           <Container renderer={<div className='header-inner' />}>
             <div className='header-left'>
               <div className='logo'>
-                <GithubOutlined style={GithubIconStyle} />
+                <Link href='/'>
+                  <a>
+                    <GithubOutlined style={GithubIconStyle} />
+                  </a>
+                </Link>
               </div>
               <div>
                 <Input.Search
@@ -104,7 +113,14 @@ const PageLayout = ({ children, user, logout, router }) => {
             height: 100%;
           }
           .ant-layout {
-            height: 100%;
+            min-height: 100%;
+          }
+          .ant-layout-header {
+            padding-left: 0;
+            padding-right: 0;
+          }
+          .ant-layout-content {
+            background: #fff;
           }
         `}
       </style>
