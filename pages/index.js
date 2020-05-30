@@ -1,12 +1,32 @@
-import { Button } from 'antd';
+import { Button, Tabs } from 'antd';
 import { LinkedinOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import Router, { withRouter } from 'next/router';
+import LRU from 'lru-cache';
+import { useEffect } from 'react';
 
 import { api_request } from '../utils/apiHelper.js';
 import Repo from '../components/Repo';
 
+const cache = new LRU({
+  maxAge: 1000 * 60 * 5,
+}); //cache for five minutes
+const isServer = typeof window === 'undefined';
+
 function Index({ userRepos, userStaredRepos, user, router }) {
+  const tabKey = router.query.tabkey || '1'; //get key from url
+
+  const handleTabChange = (key) => {
+    Router.push(`/?tabkey=${key}`); //set key to the url after user change the tab
+  };
+
+  useEffect(() => {
+    if (!isServer) {
+      userRepos && cache.set('userRepos', userRepos);
+      userStaredRepos && cache.set('userStaredRepos', userStaredRepos);
+    }
+  }, [userRepos, userStaredRepos]);
+
   if (!user || !user.id) {
     return (
       <div className='root'>
@@ -42,12 +62,18 @@ function Index({ userRepos, userStaredRepos, user, router }) {
         </p>
       </div>
       <div className='user-repos'>
-        {userRepos.map((repo) => (
-          <Repo repo={repo} key={repo.id} />
-        ))}
-        {userStaredRepos.map((repo) => (
-          <Repo repo={repo} key={repo.id} />
-        ))}
+        <Tabs activeKey={tabKey} onChange={handleTabChange} animated={false}>
+          <Tabs.TabPane tab='Stars Repos' key='1'>
+            {userStaredRepos.map((repo) => (
+              <Repo repo={repo} key={repo.id} />
+            ))}
+          </Tabs.TabPane>
+          <Tabs.TabPane tab='Your Repos' key='2'>
+            {userRepos.map((repo) => (
+              <Repo repo={repo} key={repo.id} />
+            ))}
+          </Tabs.TabPane>
+        </Tabs>
       </div>
       <style jsx>{`
         .root {
@@ -105,6 +131,17 @@ Index.getInitialProps = async ({ ctx, reduxStore }) => {
   if (!user || !user.id) {
     return;
   } //从withRedux里面拿到传给app的初始化reduxStore对象
+
+  //不是在服务端的时候使用cache
+  if (!isServer) {
+    if (cache.get('userRepos') && cache.get('userStaredRepos')) {
+      return {
+        userRepos: cache.get('userRepos'),
+        userStaredRepos: cache.get('userStaredRepos'),
+      };
+    }
+  }
+
   const userRepos = await api_request({ url: '/user/repos' }, ctx.req, ctx.res);
   const userStaredRepos = await api_request(
     { url: '/user/starred' },
