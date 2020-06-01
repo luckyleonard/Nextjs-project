@@ -4,6 +4,7 @@ const next = require('next');
 const Router = require('koa-router');
 const session = require('koa-session');
 const koaBody = require('koa-body');
+const atob = require('atob');
 
 const config = require('./config');
 const auth = require('./server/auth');
@@ -16,6 +17,9 @@ const redis = new Redis(config.redis);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+//set gloabl atob for decode the base64 in server side
+global.atob = atob;
 
 app.prepare().then(() => {
   const server = new Koa();
