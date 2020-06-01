@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Row, Col, List, Pagination } from 'antd';
 
 import { api_request } from '../utils/apiHelper';
+import { cacheRepos } from '../utils/with-repo-cache';
 import Repo from '../components/Repo';
 import FilterLink from '../components/FilterLink';
 
@@ -39,6 +40,7 @@ const selectedItemStyle = {
 function noop() {}
 const per_page = 20;
 
+const isServer = typeof window === 'undefined';
 /**
  * @param query
  * @param sort
@@ -48,6 +50,10 @@ const per_page = 20;
  */
 function Search({ router, repos }) {
   const { lang, sort, order, page } = router.query;
+
+  useEffect(() => {
+    !isServer && cacheRepos(repos.items);
+  }, []); // cache every search repo result
 
   return (
     <div className='root'>

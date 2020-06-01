@@ -6,6 +6,7 @@ import LRU from 'lru-cache';
 import { useEffect } from 'react';
 
 import { api_request } from '../utils/apiHelper.js';
+import { cacheRepos } from '../utils/with-repo-cache';
 import Repo from '../components/Repo';
 
 const cache = new LRU({
@@ -21,11 +22,26 @@ function Index({ userRepos, userStaredRepos, user, router }) {
   };
 
   useEffect(() => {
+    //基于时间缓存
+    // cachedUserRepos = userRepos
+    // cachedUserStaredRepos = userStaredRepos
+    // setTimeout(() => {
+    //   cachedUserRepos = null
+    //   cachedUserStaredRepos = null
+    // }, 10 * 1000)
     if (!isServer) {
       userRepos && cache.set('userRepos', userRepos);
       userStaredRepos && cache.set('userStaredRepos', userStaredRepos);
     }
   }, [userRepos, userStaredRepos]);
+
+  useEffect(() => {
+    if (!isServer) {
+      userRepos && cacheRepos(userRepos);
+      userStaredRepos && cacheRepos(userStaredRepos);
+    }
+  }, []);
+  //分条缓存repo详情
 
   if (!user || !user.id) {
     return (
