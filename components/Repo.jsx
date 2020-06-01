@@ -15,7 +15,9 @@ function Repo({ repo }) {
     <div className='root'>
       <div className='basic-info'>
         <h3 className='repo-title'>
-          <a>{repo.full_name}</a>
+          <Link href={`/detail?owner=${repo.owner.login}&name=${repo.name}`}>
+            <a>{repo.full_name}</a>
+          </Link>
         </h3>
         <p className='repo-desc'>{repo.description}</p>
         <p className='other-info'>
