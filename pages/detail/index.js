@@ -5,10 +5,8 @@ import { api_request } from '../../utils/apiHelper';
 const MarkdownRenderer = dynamic(
   () => import('../../components/MarkdownRender'),
   {
-    loading: () => {
-      <p>Loading</p>;
-    },
-  }
+    loading: () => <p>Loading</p>,
+  } //loading 属性应该是个jsx返回值
 );
 
 function Detail({ readme }) {
@@ -33,6 +31,7 @@ Detail.getInitialProps = async ({
       req,
       res
     );
+
     return {
       readme: readme.data,
     };

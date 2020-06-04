@@ -1,14 +1,15 @@
 import Link from 'next/link';
 import { StarFilled } from '@ant-design/icons';
-import moment from 'moment';
+import { getLastUpdated } from '../utils/timePrettier';
+// import moment from 'moment';
 
 function getLicense(license) {
   return license ? `${license.spdx_id} license` : '';
 }
 
-function getLastUpdated(time) {
-  return moment(time).fromNow();
-}
+// function getLastUpdated(time) {
+//   return moment(time).fromNow();
+// }
 
 function Repo({ repo }) {
   return (
