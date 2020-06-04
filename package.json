@@ -7,7 +7,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
+    "start:production": "cross-env NODE_ENV=production pm2 server.js"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
