@@ -7,10 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "heroku-postbuild": "npm run build",
-    "start": "pm2 start ecosystem.config.js",
+    "start": "cross-env NODE_ENV=production dotenv-load node server.js",
+    "start:production": "pm2 start ecosystem.config.js",
     "stop": "pm2 delete next-github",
-    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
-    "start:production": "cross-env NODE_ENV=production dotenv-load node server.js"
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
