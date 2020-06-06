@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:koa": "dotenv-load node server.js",
+    "dev:koa": "cross-env PORT=3000 dotenv-load node server.js",
     "dev": "next dev",
     "build": "next build",
     "heroku-postbuild": "npm run build",

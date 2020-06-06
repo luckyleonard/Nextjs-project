@@ -32,6 +32,7 @@ const PageLayout = ({ children, user, logout, router }) => {
   const handleOnSearch = useCallback(() => {
     router.push(`/search?query=${search}`);
     //进行路由跳转，根据search state的变化更新url
+    setSearch('');
   }, [search]);
 
   const handleLogout = (e) => {
