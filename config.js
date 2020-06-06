@@ -12,8 +12,9 @@ module.exports = {
     client_secret: process.env.CLIENT_SECRET,
   },
   redis: {
-    port: 6379,
-    host: '192.168.99.100',
+    port: process.env.REDIS_PORT,
+    host: process.env.REDIS_HOST,
+    password: process.env.REDIS_PSW,
   },
   GITHUB_OAUTH_URL,
   OAUTH_URL: `${GITHUB_OAUTH_URL}?client_id=${process.env.CLIENT_ID}&scope=${SCOPE}`,
