@@ -17,7 +17,7 @@ const redis = new Redis(config.redis);
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
+const port = process.env.PORT;
 //set gloabl atob for decode the base64 in server side
 global.atob = atob;
 
@@ -46,7 +46,7 @@ app.prepare().then(() => {
     ctx.respond = false;
   });
 
-  server.listen(3000, () => {
-    console.log('server is running on port 3000');
+  server.listen(port, () => {
+    console.log(`server is running on port ${port}`);
   });
 }); //编译完成后
