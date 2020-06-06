@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "heroku-postbuild": "npm run build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "node server.js",
     "start:production": "pm2 start ecosystem.config.js",
     "stop": "pm2 delete next-github",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
