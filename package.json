@@ -6,7 +6,8 @@
     "dev:koa": "dotenv-load node server.js",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "heroku-postbuild": "npm run build",
+    "start": "pm2 start ecosystem.config.js",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
     "start:production": "cross-env NODE_ENV=production pm2 server.js"
   },
@@ -29,6 +30,7 @@
     "lru-cache": "^5.1.1",
     "markdown-it": "^11.0.0",
     "next": "9.4.1",
+    "pm2": "^4.4.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "^7.2.0",
